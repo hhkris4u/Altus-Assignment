@@ -1,0 +1,48 @@
+<p>
+  <mat-toolbar color="primary">
+    <span>Altus School - Student Grades APP </span>
+  </mat-toolbar>
+</p>
+
+<div class="grid-container" *ngIf="uniqueSchools">
+  <div class="grid-item item1">
+
+    <form class="example-form">
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Search School Name</mat-label>
+        <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displaySchoolName"
+          (optionSelected)="onSelectionChanged($event)">
+          <mat-option *ngFor="let option of filteredSchools | async" [value]="option">
+            {{option.schoolName}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+    </form>
+    <button mat-raised-button color="primary" class="fetchSchoolBtn" (click)="fetchStudentGradeData()">Fetch Student
+      data <mat-icon>file_download</mat-icon></button>
+  </div>
+
+  <div class="grid-item item2" *ngIf="studentGradeData">
+
+    <mat-table [dataSource]="studentGradeData" class="mat-elevation-z8">
+      <ng-container matColumnDef="schoolName">
+        <mat-header-cell mat-header-cell *matHeaderCellDef> School Names </mat-header-cell>
+        <mat-cell mat-cell *matCellDef="let element"> {{element.schoolName}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="studentName">
+        <mat-header-cell mat-header-cell *matHeaderCellDef> Student Name </mat-header-cell>
+        <mat-cell mat-cell *matCellDef="let element"> {{element.studentName}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="studentGrade">
+        <mat-header-cell mat-header-cell *matHeaderCellDef> Student Grade </mat-header-cell>
+        <mat-cell mat-cell *matCellDef="let element"> {{element.studentGrade}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row matRipple *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+  </div>
+</div>
